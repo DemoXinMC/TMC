@@ -26,7 +26,7 @@ public class ItemOreberry extends Item
     protected IIcon textureTemplate;
     protected IIcon textureOverlay;
     
-    public ItemOreberry()
+	public ItemOreberry()
     {
         super();
         instance = this;

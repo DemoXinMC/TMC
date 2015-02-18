@@ -7,6 +7,6 @@ public abstract class InitableCompatability implements ICompatability
 {
 	public static RegisterTime[] registerAllTimes()
 	{
-	    return new RegisterTime[] { RegisterTime.PREINIT, RegisterTime.INIT, RegisterTime.POSTINIT };
+		return new RegisterTime[] { RegisterTime.PREINIT, RegisterTime.INIT, RegisterTime.POSTINIT };
 	}
 }

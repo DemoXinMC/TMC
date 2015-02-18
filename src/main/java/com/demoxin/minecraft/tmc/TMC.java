@@ -24,7 +24,7 @@ public class TMC implements IModTT
 	public static final String MODID = "TMC";
 	public static final String VERSION = "@VERSION@";
 	public static final String NAME = "The MOO Collective";
-
+	
 	@Instance(TMC.MODID)
 	public static TMC INSTANCE;
 	
@@ -40,37 +40,40 @@ public class TMC implements IModTT
 	}
 	
 	@EventHandler
-    public void preInit(FMLPreInitializationEvent event)
-    {
+	public void preInit(FMLPreInitializationEvent event)
+	{
 		proxy.preInit();
 		oreStorage = new OreStorage();
-    }
+	}
 	
 	@EventHandler
-    public void init(FMLInitializationEvent event)
-    {
+	public void init(FMLInitializationEvent event)
+	{
 		proxy.init();
 		oreStorage.loadOreDictionary();
-    }
+	}
 	
 	@EventHandler
-    public void postInit(FMLPostInitializationEvent event)
-    {
+	public void postInit(FMLPostInitializationEvent event)
+	{
 		proxy.postInit();
-    }
-
+	}
+	
 	@Override
-	public String modid() {
+	public String modid()
+	{
 		return MODID;
 	}
-
+	
 	@Override
-	public String name() {
+	public String name()
+	{
 		return NAME;
 	}
-
+	
 	@Override
-	public String version() {
+	public String version()
+	{
 		return VERSION;
 	}
 }

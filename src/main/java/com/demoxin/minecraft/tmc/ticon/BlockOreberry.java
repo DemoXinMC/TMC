@@ -17,41 +17,41 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockOreberry extends BlockLeavesBase implements ITileEntityProvider
 {
-    private IIcon[] textureBush;
-    private IIcon[] textureBushOverlay;
-    private IIcon[] textureRipe;
-    private IIcon[] textureRipeOverlay;
-    
-    protected BlockOreberry()
-    {
-        super(Material.leaves, false);
-        this.setTickRandomly(true);
-        this.setStepSound(Block.soundTypeMetal);
-        //this.setCreativeTab();
-    }
-    
-    @Override
-    public TileEntity createNewTileEntity(World world, int meta)
-    {
-        return new TileEntityOreberry();
-    }
-    
-    @Override
-    public boolean hasTileEntity(int meta)
-    {
-        return true;
-    }
-    
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tab, List list)
-    {
-        
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister iconRegister)
-    {
-        
-    }
-    
+	private IIcon[] textureBush;
+	private IIcon[] textureBushOverlay;
+	private IIcon[] textureRipe;
+	private IIcon[] textureRipeOverlay;
+	
+	protected BlockOreberry()
+	{
+		super(Material.leaves, false);
+		this.setTickRandomly(true);
+		this.setStepSound(Block.soundTypeMetal);
+		// this.setCreativeTab();
+	}
+	
+	@Override
+	public TileEntity createNewTileEntity(World world, int meta)
+	{
+		return new TileEntityOreberry();
+	}
+	
+	@Override
+	public boolean hasTileEntity(int meta)
+	{
+		return true;
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public void getSubItems(Item item, CreativeTabs tab, List list)
+	{
+		
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IIconRegister iconRegister)
+	{
+		
+	}
+	
 }

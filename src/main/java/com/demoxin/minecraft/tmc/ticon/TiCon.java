@@ -20,10 +20,10 @@ public class TiCon implements ICompatability
 	
 	public static void load()
 	{
-		if (INSTANCE == null)
+		if(INSTANCE == null)
 			INSTANCE = new TiCon();
 		
-		switch (CompatabilityRegistry.INSTANCE.getState())
+		switch(CompatabilityRegistry.INSTANCE.getState())
 		{
 			case INIT:
 				INSTANCE.init();
@@ -58,7 +58,7 @@ public class TiCon implements ICompatability
 	
 	public void postInit()
 	{
-		if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
+		if(FMLCommonHandler.instance().getSide() == Side.CLIENT)
 			registerRenderers();
 	}
 	

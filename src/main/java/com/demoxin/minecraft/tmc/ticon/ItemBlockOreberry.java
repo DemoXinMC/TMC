@@ -5,10 +5,10 @@ import net.minecraft.item.ItemBlock;
 
 public class ItemBlockOreberry extends ItemBlock
 {
-
-    public ItemBlockOreberry(Block block)
-    {
-        super(block);
-    }
-    
+	
+	public ItemBlockOreberry(Block block)
+	{
+		super(block);
+	}
+	
 }

@@ -9,10 +9,10 @@ import com.demoxin.minecraft.tmc.common.CommonProxy;
 
 public class ClientProxy extends CommonProxy
 {
-    public void postInit()
-    {
-        IResourceManager resourceManager = Minecraft.getMinecraft().getResourceManager();
-        if(resourceManager != null && resourceManager instanceof IReloadableResourceManager)
-            ((IReloadableResourceManager)resourceManager).registerReloadListener(TMC.oreStorage);
-    }
+	public void postInit()
+	{
+		IResourceManager resourceManager = Minecraft.getMinecraft().getResourceManager();
+		if(resourceManager != null && resourceManager instanceof IReloadableResourceManager)
+			((IReloadableResourceManager) resourceManager).registerReloadListener(TMC.oreStorage);
+	}
 }

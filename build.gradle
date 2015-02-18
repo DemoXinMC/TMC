@@ -33,7 +33,6 @@ repositories {
 
 dependencies {
     compile "tterrag.core:ttCore:${ttCore_version}"
-    compile "mcp.mobius.waila:Waila:${WAILA_version}"
 }
 
 processResources {

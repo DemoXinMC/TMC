@@ -26,15 +26,15 @@ public class TMC implements IModTT
 	public static final String NAME = "The MOO Collective";
 
 	@Instance(TMC.MODID)
+	public static TMC INSTANCE;
+	
 	public static OreStorage oreStorage;
 	
 	@SidedProxy(clientSide = "com.demoxin.minecraft.tmc.client.ClientProxy", serverSide = "com.demoxin.minecraft.tmc.common.CommonProxy")
 	public static CommonProxy proxy;
-	public static ArrayList<ICompatability> modules;
 	
 	public TMC()
 	{
-	    modules = new ArrayList<ICompatability>();
 		CompatabilityRegistry.INSTANCE.registerCompat(InitableCompatability.registerAllTimes(), "com.demoxin.minecraft.tmc.ticon.TiCon", "TConstruct");
 		CompatabilityRegistry.INSTANCE.registerCompat(InitableCompatability.registerAllTimes(), "com.demoxin.minecraft.tmc.mystcraft.MystCraft", "Mystcraft");
 	}
@@ -43,12 +43,14 @@ public class TMC implements IModTT
     public void preInit(FMLPreInitializationEvent event)
     {
 		proxy.preInit();
+		oreStorage = new OreStorage();
     }
 	
 	@EventHandler
     public void init(FMLInitializationEvent event)
     {
 		proxy.init();
+		oreStorage.loadOreDictionary();
     }
 	
 	@EventHandler

@@ -65,6 +65,12 @@ public class OreStorage implements IResourceManagerReloadListener
                 continue;
             }
             ore.color = ColorHelper.getAverageColor(entries);
+            ore.glowy = false;
+            for(ItemStack entry : entries)
+            {
+                if(entry.hasEffect(0))
+                    ore.glowy = true;
+            }
         }
     }
     
@@ -106,6 +112,16 @@ public class OreStorage implements IResourceManagerReloadListener
         for(Ore ore : storage)
         {
             if(ore.name == name)
+                return ore;
+        }
+        return null;
+    }
+    
+    public Ore getOreByMeta(int meta)
+    {
+        for(Ore ore : storage)
+        {
+            if(ore.meta == meta)
                 return ore;
         }
         return null;

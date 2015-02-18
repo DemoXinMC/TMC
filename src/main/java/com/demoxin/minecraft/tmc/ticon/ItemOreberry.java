@@ -1,6 +1,5 @@
 package com.demoxin.minecraft.tmc.ticon;
 
-import java.awt.Color;
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -10,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.demoxin.minecraft.tmc.TMC;
@@ -17,6 +17,8 @@ import com.demoxin.minecraft.tmc.data.OreStorage;
 import com.demoxin.minecraft.tmc.data.OreStorage.Ore;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemOreberry extends Item
 {   
@@ -28,6 +30,10 @@ public class ItemOreberry extends Item
     {
         super();
         instance = this;
+        setMaxStackSize(64);
+        setCreativeTab(TiCon.creativeTab);
+        this.setMaxDamage(0);
+        this.setHasSubtypes(true);
     }
     
     public void smelting()
@@ -92,6 +98,33 @@ public class ItemOreberry extends Item
         String berryBit = (ore.ore != null) ? StatCollector.translateToLocal("tmc.ticon.berry.ore") : StatCollector.translateToLocal("tmc.ticon.berry.alloy");
         String template = StatCollector.translateToLocal("tmc.ticon.berry");
         return template.replace("%bb", berryBit).replace("%mb", ore.prettyName);
+    }
+    
+    @Override
+    public boolean hasEffect(ItemStack stack, int pass)
+    {
+        if(!stack.hasTagCompound() || !stack.getTagCompound().hasKey("oreName"))
+            return false;
+        
+        Ore ore = TMC.oreStorage.getOreByName(stack.getTagCompound().getString("oreName"));
+        if(ore == null)
+            return false;
+        
+        return ore.glowy;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean requiresMultipleRenderPasses()
+    {
+        return true;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(ItemStack stack, int pass)
+    {
+        return pass == 0 ? textureTemplate : textureOverlay;
     }
     
     @SuppressWarnings({ "unchecked", "rawtypes" })

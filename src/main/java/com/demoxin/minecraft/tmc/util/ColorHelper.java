@@ -2,6 +2,7 @@ package com.demoxin.minecraft.tmc.util;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,17 @@ public class ColorHelper
             if(stackTextureResource == null)
                 continue;
             
-            BufferedImage image = ImageIO.read(Minecraft.getMinecraft().getResourceManager().getResource(stackTextureResource).getInputStream());
+            BufferedImage image = null;
+            try
+            {
+                image = ImageIO.read(Minecraft.getMinecraft().getResourceManager().getResource(stackTextureResource).getInputStream());
+            } catch (IOException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            if(image == null)
+                return new Color(0xFFFFFF);
             Color avgColor = getAverageColor(image);
             
             int r = 0;
@@ -86,28 +97,27 @@ public class ColorHelper
     
     private static ResourceLocation getStackTextureResource(ItemStack stack)
     {
-            IIcon icon = stack.getItem().getIcon(stack, 0);
-            if (icon == null)
-                return null;
+        IIcon icon = stack.getItem().getIcon(stack, 0);
+        if (icon == null)
+            return null;
             
-            String iconName = icon.getIconName();
-            if(iconName == null)
-                return null;
+        String iconName = icon.getIconName();
+        if(iconName == null)
+            return null;
 
-            String string = "minecraft";
+        String string = "minecraft";
 
-            int colonIndex = iconName.indexOf(58);
-            if (colonIndex >= 0)
-            {
-                if (colonIndex > 1)
-                    string = iconName.substring(0, colonIndex);
+        int colonIndex = iconName.indexOf(58);
+        if (colonIndex >= 0)
+        {
+            if (colonIndex > 1)
+                string = iconName.substring(0, colonIndex);
 
-                iconName = iconName.substring(colonIndex + 1, iconName.length());
-            }
-
-            string = string.toLowerCase();
-            iconName = "textures/items/" + iconName + ".png";
-            return new ResourceLocation(string, iconName);
+            iconName = iconName.substring(colonIndex + 1, iconName.length());
         }
+
+        string = string.toLowerCase();
+        iconName = "textures/items/" + iconName + ".png";
+        return new ResourceLocation(string, iconName);
     }
 }

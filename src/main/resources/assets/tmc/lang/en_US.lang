@@ -4,3 +4,5 @@ itemGroup.tmc.mystcraft=TMC: MystCraft
 tmc.ticon.berry=%mb %bb
 tmc.ticon.berry.ore=Oreberry
 tmc.ticon.berry.alloy=Alloyberry
+tmc.ticon.bush=Bush
+tmc.ticon.bush.format=%mb %bb %bush

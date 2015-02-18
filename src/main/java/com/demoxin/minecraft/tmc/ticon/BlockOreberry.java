@@ -33,7 +33,7 @@ public class BlockOreberry extends BlockLeavesBase implements ITileEntityProvide
     @Override
     public TileEntity createNewTileEntity(World world, int meta)
     {
-        return null;
+        return new TileEntityOreberry();
     }
     
     @Override

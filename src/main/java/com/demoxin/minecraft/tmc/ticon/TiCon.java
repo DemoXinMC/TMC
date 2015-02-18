@@ -17,52 +17,53 @@ public class TiCon implements ICompatability
 	public static CreativeTabs creativeTab;
 	
 	private static TiCon INSTANCE;
-    public static void load()
-    {
-        if(INSTANCE == null)
-            INSTANCE = new TiCon();
-        
-        switch(CompatabilityRegistry.INSTANCE.getState())
-        {
-            case INIT:
-                INSTANCE.init();
-                break;
-            case POSTINIT:
-                INSTANCE.postInit();
-                break;
-            case PREINIT:
-                INSTANCE.preInit();
-                break;
-            default:
-                break;
-        }
-    }
+	
+	public static void load()
+	{
+		if (INSTANCE == null)
+			INSTANCE = new TiCon();
+		
+		switch (CompatabilityRegistry.INSTANCE.getState())
+		{
+			case INIT:
+				INSTANCE.init();
+				break;
+			case POSTINIT:
+				INSTANCE.postInit();
+				break;
+			case PREINIT:
+				INSTANCE.preInit();
+				break;
+			default:
+				break;
+		}
+	}
 	
 	public void preInit()
 	{
-	    creativeTab = new CreativeTabsCustom("tmc.ticon");
+		creativeTab = new CreativeTabsCustom("tmc.ticon");
 		oreberryBerry = new ItemOreberry();
 		oreberryBush = new BlockOreberry();
 		GameRegistry.registerItem(oreberryBerry, "tmc.ticon.item.oreberry");
 		GameRegistry.registerBlock(oreberryBush, ItemBlockOreberry.class, "tmc.ticon.block.oreberry");
-		((CreativeTabsCustom)creativeTab).setDisplay(Item.getItemFromBlock(oreberryBush));
+		((CreativeTabsCustom) creativeTab).setDisplay(Item.getItemFromBlock(oreberryBush));
 		GameRegistry.registerTileEntity(TileEntityOreberry.class, "tmc.ticon.oreberry");
 	}
 	
 	public void init()
 	{
-	    ((ItemOreberry)oreberryBerry).oreDicting();
-	    ((ItemOreberry)oreberryBerry).smelting();
+		((ItemOreberry) oreberryBerry).oreDicting();
+		((ItemOreberry) oreberryBerry).smelting();
 	}
 	
 	public void postInit()
 	{
-	    if(FMLCommonHandler.instance().getSide() == Side.CLIENT)
-	        registerRenderers();
+		if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
+			registerRenderers();
 	}
 	
 	public void registerRenderers()
 	{
-	    
+		
 	}
 }

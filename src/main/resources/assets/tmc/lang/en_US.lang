@@ -1,0 +1,6 @@
+itemGroup.tmc.ticon=TMC: Tinker's Construct
+itemGroup.tmc.mystcraft=TMC: MystCraft
+
+tmc.ticon.berry=%mb %bb
+tmc.ticon.berry.ore=Oreberry
+tmc.ticon.berry.alloy=Alloyberry

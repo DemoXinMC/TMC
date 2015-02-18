@@ -1,0 +1,69 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url = "http://files.minecraftforge.net/maven" }
+        maven { url = "https://oss.sonatype.org/content/repositories/snapshots/" }
+    }
+    dependencies { classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT' }
+}
+
+apply plugin: 'forge'
+
+version = "MC${minecraft_version}-${mod_version}"
+
+minecraft {
+    version = "${minecraft_version}-${forge_version}"
+    runDir = 'run'
+	
+	//replace "@VERSION@", project.version
+	//replace "${toReplace}", "required-after:Forge@[${forgeDep_version},);required-after:ttCore@[${ttCore_version},);after:EnderIO;after:Waila@[${WAILA_version},);"
+    //replaceIn "ModProps.java"
+}
+
+repositories {
+    maven { // WAILA
+        name "Mobius Repo"
+        url "http://mobiusstrip.eu/maven"
+    }
+    maven { // ttCore
+        name 'tterrag Repo'
+        url "http://maven.tterrag.com"
+    }
+}
+
+dependencies {
+    compile "tterrag.core:ttCore:${ttCore_version}"
+    compile "mcp.mobius.waila:Waila:${WAILA_version}"
+}
+
+processResources {
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include '**/*.info'
+        include '**/*.properties'
+
+        // replace version and mcversion
+        expand 'version': project.version, 'mcversion': project.minecraft.version
+    }
+
+    // copy everything else, thats not the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude '**/*.info'
+        exclude '**/*.properties'
+    }
+}
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'deobf'
+}
+
+tasks.build.dependsOn sourceJar, deobfJar

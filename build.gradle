@@ -25,14 +25,27 @@ repositories {
         name "Mobius Repo"
         url "http://mobiusstrip.eu/maven"
     }
+	maven {
+		name "CB Maven FS"
+		url "http://chickenbones.net/maven/"
+	}
     maven { // ttCore
         name 'tterrag Repo'
         url "http://maven.tterrag.com"
     }
+	maven {
+		name "DVS1 Maven FS'"
+		url 'http://dvs1.progwml6.com/files/maven'
+	}
+	maven {
+		name "ForgeFS"
+		url 'http://files.minecraftforge.net/maven'
+	}
 }
 
 dependencies {
     compile "tterrag.core:ttCore:${ttCore_version}"
+	compile "tconstruct:TConstruct:${minecraft_version}-${tconstruct_version}:deobf"
 }
 
 processResources {

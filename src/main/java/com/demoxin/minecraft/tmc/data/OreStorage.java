@@ -36,22 +36,35 @@ public class OreStorage implements IResourceManagerReloadListener
 			ArrayList<ItemStack> ingots = OreDictionary.getOres("ingot" + baseName);
 			ArrayList<ItemStack> nuggets = OreDictionary.getOres("nugget" + baseName);
 			ArrayList<ItemStack> ores = OreDictionary.getOres("ore" + baseName);
+			ArrayList<ItemStack> blocks = OreDictionary.getOres("block" + baseName);
 			
 			if(ingots.isEmpty() || nuggets.isEmpty())
 				continue;
 			
+			if(ores.isEmpty() && blocks.isEmpty())
+				continue;
+			
 			Ore newOre = new Ore();
 			newOre.name = baseName;
-			newOre.ingot = ingots.get(0).copy();
-			newOre.nugget = nuggets.get(0).copy();
+			newOre.ingot = new ItemStack(ingots.get(0).getItem(), 1, ingots.get(0).getItemDamage());
+			newOre.nugget = new ItemStack(nuggets.get(0).getItem(), 1, nuggets.get(0).getItemDamage());
 			
 			if(!ores.isEmpty())
-				newOre.ore = ores.get(0);
+				newOre.ore = new ItemStack(ores.get(0).getItem(), 1, ores.get(0).getItemDamage());
 			else
 				newOre.ore = null;
 			
+			if(!blocks.isEmpty())
+				newOre.block = new ItemStack(blocks.get(0).getItem(), 1, blocks.get(0).getItemDamage());
+			else
+				newOre.block = null;
+			
 			newOre.meta = meta++;
+			
+			storage.add(newOre);
 		}
+		rebuildNames();
+		rebuildColors();
 	}
 	
 	public void rebuildColors()
@@ -85,8 +98,10 @@ public class OreStorage implements IResourceManagerReloadListener
 			}
 			
 			String itemStackName = ("" + StatCollector.translateToLocal(ore.ingot.getItem().getUnlocalizedNameInefficiently(ore.ingot) + ".name"));
-			itemStackName = itemStackName.replace(StatCollector.translateToLocal("tmc.langhelpers.matcher.ingot"), "").trim();
-			ore.prettyName = itemStackName;
+			itemStackName = itemStackName.replace("" + StatCollector.translateToLocal("tmc.langhelpers.matcher.ingot") + "", "");
+			ore.prettyName = itemStackName.trim();
+			if(ore.prettyName == null || ore.prettyName.isEmpty())
+				ore.prettyName = "PROBLEM";
 		}
 	}
 	
@@ -104,14 +119,16 @@ public class OreStorage implements IResourceManagerReloadListener
 		public ItemStack ingot;
 		public ItemStack nugget;
 		public ItemStack ore;
+		public ItemStack block;
 		public boolean glowy;
+		
 	}
 	
 	public Ore getOreByName(String name)
 	{
 		for(Ore ore : storage)
 		{
-			if(ore.name == name)
+			if(ore.name.equals(name))
 				return ore;
 		}
 		return null;
@@ -131,7 +148,7 @@ public class OreStorage implements IResourceManagerReloadListener
 	{
 		for(Ore storedOre : storage)
 		{
-			if(ore == storedOre.name)
+			if(ore.equals(storedOre.name))
 				return storedOre.meta;
 		}
 		return 0;

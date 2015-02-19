@@ -1,5 +1,7 @@
 package com.demoxin.minecraft.tmc.ticon;
 
+import com.demoxin.minecraft.tmc.TMC;
+
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -41,6 +43,7 @@ public class TiCon implements ICompatability
 	
 	public void preInit()
 	{
+		System.out.println("OreStorage contains " + TMC.oreStorage.getStorage().size() + " entries!");
 		creativeTab = new CreativeTabsCustom("tmc.ticon");
 		oreberryBerry = new ItemOreberry();
 		oreberryBush = new BlockOreberry();

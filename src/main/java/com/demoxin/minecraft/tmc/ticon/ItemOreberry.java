@@ -2,6 +2,8 @@ package com.demoxin.minecraft.tmc.ticon;
 
 import java.util.List;
 
+import tconstruct.library.crafting.Smeltery;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -9,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.demoxin.minecraft.tmc.TMC;
@@ -21,12 +22,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemOreberry extends Item
-{   
+{
     public static ItemOreberry instance;
     protected IIcon textureTemplate;
     protected IIcon textureOverlay;
     
-	public ItemOreberry()
+    public ItemOreberry()
     {
         super();
         instance = this;
@@ -38,11 +39,21 @@ public class ItemOreberry extends Item
     
     public void smelting()
     {
-        for(OreStorage.Ore ore : TMC.oreStorage.getStorage())
+        for(Ore ore : TMC.oreStorage.getStorage())
         {
-            ItemStack input = new ItemStack(this, 1, ore.meta);
-            ItemStack output = ore.nugget.copy();
+            ItemStack input = new ItemStack(this);
+            input.stackTagCompound = new NBTTagCompound();
+            input.getTagCompound().setString("oreName", ore.name);
+            ItemStack output = new ItemStack(ore.nugget.getItem(), 1, ore.nugget.getItemDamage());
+            System.out.println("Smelting Recipe Added: " + input.getDisplayName() + " -> " + output.getDisplayName());
             GameRegistry.addSmelting(input, output, 0);
+            
+            Block displayBlock;
+            int displayMeta;
+            
+            displayBlock = (ore.ore != null) ? Block.getBlockFromItem(ore.ore.getItem()) : Block.getBlockFromItem(ore.block.getItem());
+            displayMeta = (ore.ore != null) ? ore.ore.getItemDamage() : ore.block.getItemDamage();
+            Smeltery.addMelting(input.copy(), displayBlock, displayMeta, Smeltery.getLiquifyTemperature(ore.nugget.copy()), Smeltery.getSmelteryResult(ore.nugget.copy()));
         }
     }
     
@@ -59,7 +70,10 @@ public class ItemOreberry extends Item
     public int getDamage(ItemStack stack)
     {
         if(!stack.hasTagCompound() || !stack.getTagCompound().hasKey("oreName"))
-            return 0;
+        {
+            stack.stackTagCompound = new NBTTagCompound();
+            stack.getTagCompound().setString("oreName", "Iron");
+        }
         String oreName = stack.getTagCompound().getString("oreName");
         Ore ore = TMC.oreStorage.getOreByName(oreName);
         if(ore == null)
@@ -77,7 +91,16 @@ public class ItemOreberry extends Item
     @Override
     public int getColorFromItemStack(ItemStack stack, int pass)
     {
-        return pass == 0 ? TMC.oreStorage.getOreByName(stack.getTagCompound().getString("oreName")).color.getRGB() : super.getColorFromItemStack(stack, pass);
+        if(pass != 0)
+            return super.getColorFromItemStack(stack, pass);
+        
+        if(!stack.hasTagCompound())
+            return 0xCCCCCC;
+        
+        if(TMC.oreStorage.getOreByName(stack.getTagCompound().getString("oreName")) == null)
+            return 0xCCCCCC;
+        
+        return TMC.oreStorage.getOreByName(stack.getTagCompound().getString("oreName")).color.getRGB();
     }
     
     @Override
@@ -97,7 +120,9 @@ public class ItemOreberry extends Item
         Ore ore = TMC.oreStorage.getOreByName(stack.getTagCompound().getString("oreName"));
         String berryBit = (ore.ore != null) ? StatCollector.translateToLocal("tmc.ticon.berry.ore") : StatCollector.translateToLocal("tmc.ticon.berry.alloy");
         String template = StatCollector.translateToLocal("tmc.ticon.berry");
-        return template.replace("%bb", berryBit).replace("%mb", ore.prettyName);
+        String bbReplaced = template.replace("%bb", berryBit);
+        String mbReplaced = bbReplaced.replace("%mb", ore.prettyName);
+        return mbReplaced;
     }
     
     @Override
@@ -112,14 +137,14 @@ public class ItemOreberry extends Item
         
         return ore.glowy;
     }
-
+    
     @Override
     @SideOnly(Side.CLIENT)
     public boolean requiresMultipleRenderPasses()
     {
         return true;
     }
-
+    
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(ItemStack stack, int pass)
@@ -131,11 +156,12 @@ public class ItemOreberry extends Item
     @Override
     public void getSubItems(Item item, CreativeTabs tabs, List list)
     {
-        for(int i = 0; i < TMC.oreStorage.getStorage().size(); ++i)
+        System.out.println("getSubItems() called!");
+        for(Ore ore : TMC.oreStorage.getStorage())
         {
-            ItemStack berry = new ItemStack(this);
+            ItemStack berry = new ItemStack(this, 1, ore.meta);
             berry.stackTagCompound = new NBTTagCompound();
-            berry.getTagCompound().setString("oreName", TMC.oreStorage.getStorage().get(i).name);
+            berry.getTagCompound().setString("oreName", ore.name);
             list.add(berry);
         }
     }

@@ -6,3 +6,5 @@ tmc.ticon.berry.ore=Oreberry
 tmc.ticon.berry.alloy=Alloyberry
 tmc.ticon.bush=Bush
 tmc.ticon.bush.format=%mb %bb %bush
+
+tmc.langhelpers.matcher.ingot=Ingot

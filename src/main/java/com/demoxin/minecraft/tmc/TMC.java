@@ -50,7 +50,6 @@ public class TMC implements IModTT
 	public void init(FMLInitializationEvent event)
 	{
 		proxy.init();
-		oreStorage.loadOreDictionary();
 	}
 	
 	@EventHandler

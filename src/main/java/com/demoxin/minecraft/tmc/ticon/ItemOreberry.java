@@ -2,7 +2,6 @@ package com.demoxin.minecraft.tmc.ticon;
 
 import java.util.List;
 
-import tconstruct.library.crafting.Smeltery;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -12,20 +11,28 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
+import tconstruct.library.crafting.Smeltery;
+import tterrag.core.common.Handlers.Handler;
+import tterrag.core.common.Handlers.Handler.HandlerType;
 
 import com.demoxin.minecraft.tmc.TMC;
 import com.demoxin.minecraft.tmc.data.OreStorage;
 import com.demoxin.minecraft.tmc.data.OreStorage.Ore;
 
+import cpw.mods.fml.common.eventhandler.EventPriority;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+@Handler(HandlerType.FORGE)
 public class ItemOreberry extends Item
 {
     public static ItemOreberry instance;
     protected IIcon textureTemplate;
     protected IIcon textureOverlay;
+    private List<Ore> processed;
     
     public ItemOreberry()
     {
@@ -37,32 +44,24 @@ public class ItemOreberry extends Item
         this.setHasSubtypes(true);
     }
     
-    public void smelting()
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void registerOre(OreRegisterEvent event)
     {
         for(Ore ore : TMC.oreStorage.getStorage())
         {
-            ItemStack input = new ItemStack(this);
-            input.stackTagCompound = new NBTTagCompound();
-            input.getTagCompound().setString("oreName", ore.name);
-            ItemStack output = new ItemStack(ore.nugget.getItem(), 1, ore.nugget.getItemDamage());
-            System.out.println("Smelting Recipe Added: " + input.getDisplayName() + " -> " + output.getDisplayName());
-            GameRegistry.addSmelting(input, output, 0);
+            if(processed.contains(ore))
+                continue;
             
-            Block displayBlock;
-            int displayMeta;
+            processed.add(ore);
+            ItemStack oreDictionary = new ItemStack(this, 1, ore.meta);
+            oreDictionary.stackTagCompound = new NBTTagCompound();
+            oreDictionary.getTagCompound().setString("oreName", ore.name);
+            OreDictionary.registerOre("nugget" + ore.name, oreDictionary);
             
-            displayBlock = (ore.ore != null) ? Block.getBlockFromItem(ore.ore.getItem()) : Block.getBlockFromItem(ore.block.getItem());
-            displayMeta = (ore.ore != null) ? ore.ore.getItemDamage() : ore.block.getItemDamage();
-            Smeltery.addMelting(input.copy(), displayBlock, displayMeta, Smeltery.getLiquifyTemperature(ore.nugget.copy()), Smeltery.getSmelteryResult(ore.nugget.copy()));
-        }
-    }
-    
-    public void oreDicting()
-    {
-        for(OreStorage.Ore ore : TMC.oreStorage.getStorage())
-        {
-            ItemStack toDict = new ItemStack(this, 1, ore.meta);
-            OreDictionary.registerOre("nugget" + ore.name, toDict);
+            ItemStack smelting = new ItemStack(this, 1, ore.meta);
+            smelting.stackTagCompound = new NBTTagCompound();
+            smelting.getTagCompound().setString("oreName", ore.name);
+            GameRegistry.addSmelting(smelting, ore.nugget.copy(), 0);
         }
     }
     
@@ -156,7 +155,6 @@ public class ItemOreberry extends Item
     @Override
     public void getSubItems(Item item, CreativeTabs tabs, List list)
     {
-        System.out.println("getSubItems() called!");
         for(Ore ore : TMC.oreStorage.getStorage())
         {
             ItemStack berry = new ItemStack(this, 1, ore.meta);

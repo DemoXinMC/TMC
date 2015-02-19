@@ -43,7 +43,6 @@ public class TiCon implements ICompatability
 	
 	public void preInit()
 	{
-		System.out.println("OreStorage contains " + TMC.oreStorage.getStorage().size() + " entries!");
 		creativeTab = new CreativeTabsCustom("tmc.ticon");
 		oreberryBerry = new ItemOreberry();
 		oreberryBush = new BlockOreberry();
@@ -55,8 +54,7 @@ public class TiCon implements ICompatability
 	
 	public void init()
 	{
-		((ItemOreberry) oreberryBerry).oreDicting();
-		((ItemOreberry) oreberryBerry).smelting();
+	    
 	}
 	
 	public void postInit()

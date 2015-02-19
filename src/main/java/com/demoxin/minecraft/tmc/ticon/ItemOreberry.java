@@ -1,8 +1,8 @@
 package com.demoxin.minecraft.tmc.ticon;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -10,14 +10,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
-import tconstruct.library.crafting.Smeltery;
-import tterrag.core.common.Handlers.Handler;
-import tterrag.core.common.Handlers.Handler.HandlerType;
 
 import com.demoxin.minecraft.tmc.TMC;
-import com.demoxin.minecraft.tmc.data.OreStorage;
 import com.demoxin.minecraft.tmc.data.OreStorage.Ore;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
@@ -26,7 +23,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-@Handler(HandlerType.FORGE)
 public class ItemOreberry extends Item
 {
     public static ItemOreberry instance;
@@ -42,6 +38,8 @@ public class ItemOreberry extends Item
         setCreativeTab(TiCon.creativeTab);
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
+        processed = new ArrayList<Ore>();
+        MinecraftForge.EVENT_BUS.register(this);
     }
     
     @SubscribeEvent(priority = EventPriority.LOWEST)

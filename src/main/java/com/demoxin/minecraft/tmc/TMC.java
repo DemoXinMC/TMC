@@ -44,6 +44,7 @@ public class TMC implements IModTT
 	{
 		proxy.preInit();
 		oreStorage = new OreStorage();
+		oreStorage.loadOreDictionary();
 	}
 	
 	@EventHandler

@@ -8,6 +8,7 @@ import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 import tterrag.core.common.Handlers.Handler;
@@ -17,7 +18,6 @@ import com.demoxin.minecraft.tmc.util.ColorHelper;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-@Handler(HandlerType.FORGE)
 public class OreStorage implements IResourceManagerReloadListener
 {
     protected List<Ore> storage;
@@ -29,6 +29,22 @@ public class OreStorage implements IResourceManagerReloadListener
         storage = new ArrayList<Ore>();
         tempStorage = new ArrayList<Ore>();
         nextMeta = 0;
+        MinecraftForge.EVENT_BUS.register(this);
+    }
+    
+    public void loadOreDictionary()
+    {
+        String[] oreNames = OreDictionary.getOreNames();
+        for(String oreName : oreNames)
+        {
+            ArrayList<ItemStack> entries = OreDictionary.getOres(oreName);
+            
+            if(entries.isEmpty())
+                continue;
+            
+            OreRegisterEvent event = new OreRegisterEvent(oreName, entries.get(0));
+            oreDictEventHandler(event);
+        }
     }
     
     @SubscribeEvent

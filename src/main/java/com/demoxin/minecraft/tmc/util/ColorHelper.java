@@ -66,6 +66,8 @@ public class ColorHelper
 			g += color.getGreen();
 			b += color.getBlue();
 		}
+		if(colors.size() == 0)
+		    return new Color(0xFFFFFF);
 		return new Color(r / colors.size(), g / colors.size(), b / colors.size());
 	}
 	

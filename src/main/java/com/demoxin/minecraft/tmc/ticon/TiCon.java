@@ -1,13 +1,12 @@
 package com.demoxin.minecraft.tmc.ticon;
 
-import com.demoxin.minecraft.tmc.TMC;
-
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import tterrag.core.common.compat.CompatabilityRegistry;
 import tterrag.core.common.compat.ICompatability;
 import tterrag.core.common.util.CreativeTabsCustom;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -65,6 +64,6 @@ public class TiCon implements ICompatability
 	
 	public void registerRenderers()
 	{
-		
+	    RenderingRegistry.registerBlockHandler(RendererOreberry.renderId, new RendererOreberry());
 	}
 }

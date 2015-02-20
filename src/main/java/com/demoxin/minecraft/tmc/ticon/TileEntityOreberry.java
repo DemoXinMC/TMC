@@ -7,12 +7,12 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
 import com.demoxin.minecraft.tmc.TMC;
-import com.demoxin.minecraft.tmc.data.OreStorage.Ore;
+import com.demoxin.minecraft.tmc.data.OreHelper.Ore;
 
 public class TileEntityOreberry extends TileEntity
 {
-	int growthState;
-	Ore ore;
+	public int growthState;
+	protected Ore ore;
 	
 	@Override
 	public boolean canUpdate()
@@ -56,4 +56,15 @@ public class TileEntityOreberry extends TileEntity
 		if(ore == null)
 			worldObj.setBlockToAir(xCoord, yCoord, zCoord);
 	}
+
+    public Ore getOre()
+    {
+        return ore;
+    }
+    
+    public void setOre(Ore ore)
+    {
+        if(this.ore == null)
+            this.ore = ore;
+    }
 }

@@ -7,7 +7,7 @@ import tterrag.core.common.compat.CompatabilityRegistry;
 import tterrag.core.common.compat.ICompatability;
 
 import com.demoxin.minecraft.tmc.common.CommonProxy;
-import com.demoxin.minecraft.tmc.data.OreStorage;
+import com.demoxin.minecraft.tmc.data.OreHelper;
 import com.demoxin.minecraft.tmc.util.InitableCompatability;
 
 import cpw.mods.fml.common.Mod;
@@ -28,7 +28,7 @@ public class TMC implements IModTT
 	@Instance(TMC.MODID)
 	public static TMC INSTANCE;
 	
-	public static OreStorage oreStorage;
+	public static OreHelper oreStorage;
 	
 	@SidedProxy(clientSide = "com.demoxin.minecraft.tmc.client.ClientProxy", serverSide = "com.demoxin.minecraft.tmc.common.CommonProxy")
 	public static CommonProxy proxy;
@@ -37,14 +37,15 @@ public class TMC implements IModTT
 	{
 		CompatabilityRegistry.INSTANCE.registerCompat(InitableCompatability.registerAllTimes(), "com.demoxin.minecraft.tmc.ticon.TiCon", "TConstruct");
 		CompatabilityRegistry.INSTANCE.registerCompat(InitableCompatability.registerAllTimes(), "com.demoxin.minecraft.tmc.mystcraft.MystCraft", "Mystcraft");
+		CompatabilityRegistry.INSTANCE.registerCompat(InitableCompatability.registerAllTimes(), "com.demoxin.minecraft.tmc.enderio.EnderIO", "EnderIO");
+		oreStorage = new OreHelper();
+        oreStorage.loadOreDictionary();
 	}
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		proxy.preInit();
-		oreStorage = new OreStorage();
-		oreStorage.loadOreDictionary();
+		proxy.preInit();	
 	}
 	
 	@EventHandler

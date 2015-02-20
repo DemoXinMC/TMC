@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,7 +16,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
 import com.demoxin.minecraft.tmc.TMC;
-import com.demoxin.minecraft.tmc.data.OreStorage.Ore;
+import com.demoxin.minecraft.tmc.data.OreHelper.Ore;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -133,6 +134,19 @@ public class ItemOreberry extends Item
             return false;
         
         return ore.glowy;
+    }
+    
+    @Override
+    public EnumRarity getRarity(ItemStack stack)
+    {
+        if(!stack.hasTagCompound() || !stack.getTagCompound().hasKey("oreName"))
+            return EnumRarity.common;
+        
+        Ore ore = TMC.oreStorage.getOreByName(stack.getTagCompound().getString("oreName"));
+        if(ore == null)
+            return EnumRarity.common;
+        
+        return ore.rarity;
     }
     
     @Override

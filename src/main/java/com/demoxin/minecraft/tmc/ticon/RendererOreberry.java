@@ -1,5 +1,7 @@
 package com.demoxin.minecraft.tmc.ticon;
 
+import java.awt.Color;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -8,8 +10,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
-
-import tterrag.core.common.util.TTColorUtils;
 
 import com.demoxin.minecraft.tmc.data.OreHelper;
 import com.demoxin.minecraft.tmc.data.OreHelper.Ore;
@@ -63,54 +63,54 @@ public class RendererOreberry implements ISimpleBlockRenderingHandler
         
         tessellator.startDrawingQuads();
         tessellator.setNormal(0.0F, -1F, 0.0F);
-        TTColorUtils.setGLColorFromInt(color);
+        tessellator.setColorOpaque_I(color);
         renderer.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, base);
-        TTColorUtils.setGLColorFromInt(0xFFFFFF);
+        tessellator.setColorOpaque_I(0xFFFFFF);
         if(hasOverlay)
             renderer.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, overlay);
         tessellator.draw();
         
         tessellator.startDrawingQuads();
         tessellator.setNormal(0.0F, 1.0F, 0.0F);
-        TTColorUtils.setGLColorFromInt(color);
+        tessellator.setColorOpaque_I(color);
         renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, base);
-        TTColorUtils.setGLColorFromInt(0xFFFFFF);
+        tessellator.setColorOpaque_I(0xFFFFFF);
         if(hasOverlay)
             renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, overlay);
         tessellator.draw();
         
         tessellator.startDrawingQuads();
         tessellator.setNormal(0.0F, 0.0F, -1F);
-        TTColorUtils.setGLColorFromInt(color);
+        tessellator.setColorOpaque_I(color);
         renderer.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, base);
-        TTColorUtils.setGLColorFromInt(0xFFFFFF);
+        tessellator.setColorOpaque_I(0xFFFFFF);
         if(hasOverlay)
             renderer.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, overlay);
         tessellator.draw();
         
         tessellator.startDrawingQuads();
         tessellator.setNormal(0.0F, 0.0F, 1.0F);
-        TTColorUtils.setGLColorFromInt(color);
+        tessellator.setColorOpaque_I(color);
         renderer.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, base);
-        TTColorUtils.setGLColorFromInt(0xFFFFFF);
+        tessellator.setColorOpaque_I(0xFFFFFF);
         if(hasOverlay)
             renderer.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, overlay);
         tessellator.draw();
         
         tessellator.startDrawingQuads();
         tessellator.setNormal(-1F, 0.0F, 0.0F);
-        TTColorUtils.setGLColorFromInt(color);
+        tessellator.setColorOpaque_I(color);
         renderer.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, base);
-        TTColorUtils.setGLColorFromInt(0xFFFFFF);
+        tessellator.setColorOpaque_I(0xFFFFFF);
         if(hasOverlay)
             renderer.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, overlay);
         tessellator.draw();
         
         tessellator.startDrawingQuads();
         tessellator.setNormal(1.0F, 0.0F, 0.0F);
-        TTColorUtils.setGLColorFromInt(color);
+        tessellator.setColorOpaque_I(color);
         renderer.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, base);
-        TTColorUtils.setGLColorFromInt(0xFFFFFF);
+        tessellator.setColorOpaque_I(0xFFFFFF);
         if(hasOverlay)
             renderer.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, overlay);
         tessellator.draw();
@@ -135,6 +135,5 @@ public class RendererOreberry implements ISimpleBlockRenderingHandler
     public int getRenderId()
     {
         return renderId;
-    }
-    
+    }    
 }

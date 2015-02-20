@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
@@ -53,8 +54,7 @@ public class RendererOreberry implements ISimpleBlockRenderingHandler
             return;
         
         int color = 0xFFFFFF;
-        if(ore.color != null)
-            color = ore.color.getRGB();
+        color = ore.getColor();
             
         renderer.setRenderBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.75F, 0.875F);
 
@@ -119,9 +119,29 @@ public class RendererOreberry implements ISimpleBlockRenderingHandler
     }
 
     @Override
-    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
+    public boolean renderWorldBlock(IBlockAccess blockAccess, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
     {
+        if(renderId != modelId)
+            return false;
+
+        TileEntity te = blockAccess.getTileEntity(x, y, z);
+        if(te == null || !(te instanceof TileEntityOreberry))
+            return false;
         
+        switch(((TileEntityOreberry)te).growthState)
+        {
+            case 0:
+                renderer.setRenderBounds(0.25F, 0.0F, 0.25F, 0.75F, 0.5F, 0.75F);
+                break;
+            case 1:
+                renderer.setRenderBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.75F, 0.875F);
+                break;
+            default:
+                renderer.setRenderBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+                break;
+        }
+        
+        renderer.renderStandardBlock(block, x, y, z);
         return true;
     }
 

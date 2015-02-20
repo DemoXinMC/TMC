@@ -1,13 +1,11 @@
 package com.demoxin.minecraft.tmc;
 
-import java.util.ArrayList;
-
 import tterrag.core.IModTT;
 import tterrag.core.common.compat.CompatabilityRegistry;
-import tterrag.core.common.compat.ICompatability;
 
 import com.demoxin.minecraft.tmc.common.CommonProxy;
 import com.demoxin.minecraft.tmc.data.OreHelper;
+import com.demoxin.minecraft.tmc.materialhelpers.FluidHelper;
 import com.demoxin.minecraft.tmc.util.InitableCompatability;
 
 import cpw.mods.fml.common.Mod;
@@ -58,6 +56,7 @@ public class TMC implements IModTT
 	public void postInit(FMLPostInitializationEvent event)
 	{
 		proxy.postInit();
+		new FluidHelper();
 	}
 	
 	@Override

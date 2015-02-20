@@ -55,6 +55,8 @@ public class TileEntityOreberry extends TileEntity
 		ore = TMC.oreStorage.getOreByName(data.getString("oreName"));
 		if(ore == null)
 			worldObj.setBlockToAir(xCoord, yCoord, zCoord);
+		
+		this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
 	}
 
     public Ore getOre()

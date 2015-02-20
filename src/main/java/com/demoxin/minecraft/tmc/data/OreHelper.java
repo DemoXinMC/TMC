@@ -2,6 +2,7 @@ package com.demoxin.minecraft.tmc.data;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +37,7 @@ public class OreHelper implements IResourceManagerReloadListener
         oreStorage = new ArrayList<Ore>();
         alloyStorage = new ArrayList<Alloy>();
         tempStorage = new ArrayList<Ore>();
+        materialHelpers = new HashMap<Block, ArrayList<IMaterialHelper>>();
         nextMeta = 0;
         MinecraftForge.EVENT_BUS.register(this);
         INSTANCE = this;
@@ -54,6 +56,7 @@ public class OreHelper implements IResourceManagerReloadListener
             OreRegisterEvent event = new OreRegisterEvent(oreName, entries.get(0));
             oreDictEventHandler(event);
         }
+        Alloys.loadKnownAlloys(this);
     }
     
     @SubscribeEvent
@@ -180,6 +183,11 @@ public class OreHelper implements IResourceManagerReloadListener
         {
             return this.name.toLowerCase();
         }
+        
+        public int getColor()
+        {
+            return color.getRGB();
+        }
     }
     
     public static class Alloy
@@ -287,6 +295,9 @@ public class OreHelper implements IResourceManagerReloadListener
     {
         Block block = blockAccess.getBlock(x, y, z);
         
+        if(block == null)
+            return new ArrayList<String>();
+        
         if(!materialHelpers.containsKey(block))
             return new ArrayList<String>();
         ArrayList<IMaterialHelper> helpers = materialHelpers.get(block);
@@ -310,6 +321,14 @@ public class OreHelper implements IResourceManagerReloadListener
         return results;
     }
     
+    public void registerMaterialHelper(Block block, IMaterialHelper helper)
+    {
+        if(!materialHelpers.containsKey(block))
+            materialHelpers.put(block, new ArrayList<IMaterialHelper>());
+        
+        materialHelpers.get(block).add(helper);
+    }
+    
     @Override
     public void onResourceManagerReload(IResourceManager resourceManager)
     {
@@ -321,5 +340,10 @@ public class OreHelper implements IResourceManagerReloadListener
     {
         public ArrayList<String> getMaterials(IBlockAccess blockAccess, int x, int y, int z);
         public ArrayList<Ore> getOres(IBlockAccess blockAccess, int x, int y, int z);
+    }
+
+    public int numAlloys()
+    {
+        return alloyStorage.size();
     }
 }
